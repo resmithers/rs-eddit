@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Topics from './Topics';
 import Articles from './Articles';
 import axios from 'axios';
+import { Router } from '@reach/router';
 
 export default class TopicLayout extends Component {
   static propTypes = {
@@ -26,6 +27,7 @@ export default class TopicLayout extends Component {
     axios
       .get(`https://rs-knews.herokuapp.com/api/articles${topic && '?topic=' + topic}`)
       .then(({data}) => {
+        console.log(data)
         this.setState({ articles: data.articles})
       })
   }
@@ -36,7 +38,9 @@ export default class TopicLayout extends Component {
     return (
       <div>
         <Topics topics={topics} fetchTopics={this.fetchTopics}/>
-        <Articles articles={articles} fetchArticles={this.fetchArticles}/>
+        <Router>
+          <Articles path='/:topics' articles={articles} fetchArticles={this.fetchArticles}/>
+        </Router>
       </div>
     )
   }

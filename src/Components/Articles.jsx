@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from '@reach/router'
 import PropTypes from 'prop-types'
 
 export default class Articles extends Component {
@@ -7,17 +8,23 @@ export default class Articles extends Component {
   }
 
   componentDidMount () {
-    this.props.fetchArticles()
+    this.props.fetchArticles(this.props.topics)
+  }
+
+  componentDidUpdate (prevProps) {
+    if (prevProps.topics !== this.props.topics) {
+      this.props.fetchArticles(this.props.topics)
+    }
   }
 
   render() {
     const { articles } = this.props
     return (
-      <div>
+      <ul>
         {articles.map((art, i) => {
-          return <p key={ i }>{art.title || art}</p>
+          return <Link key={i} to={`/articles/${art.article_id}`}><li>{art.title || art}</li></Link>
         })}
-      </div>
+      </ul>
     )
   }
 }

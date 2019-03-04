@@ -17,7 +17,7 @@ class App extends Component {
       <div className="App">
         <Header user={user}/>
         <Router>
-          <TopicLayout path='/topics' user={user}/>
+          <TopicLayout path='/topics/*' user={user}/>
           <ArticleLayout path='/articles' user={user}/>
         </Router>
       </div>

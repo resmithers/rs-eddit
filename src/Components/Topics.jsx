@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from '@reach/router'
 import PropTypes from 'prop-types'
 
 export default class Topics extends Component {
@@ -13,11 +14,11 @@ export default class Topics extends Component {
   render() {
     const { topics } = this.props
     return (
-      <div>
+      <ul>
         {topics.map((topic, i) => {
-          return <p key={topic.slug || i }>{topic.slug}</p>
+          return <Link key={i} to={`${topic.slug}`}><li >{topic.slug}</li></Link>
         })}
-      </div>
+      </ul>
     )
   }
 }
