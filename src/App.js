@@ -1,12 +1,10 @@
-/* eslint-disable react/jsx-filename-extension */
 import React, { Component } from 'react';
-import { Router } from '@reach/router'
+import { Router, Link } from '@reach/router'
 import Header from './Components/Header';
-import ArticleLayout from './Components/ArticleLayout';
+import SingleArticleLayout from './Components/SingleArticleLayout';
 import './App.css';
 import ListArticleLayout from './Components/ListArticleLayout';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class App extends Component {
   state = {
     user: 'test_user'
@@ -16,9 +14,10 @@ export default class App extends Component {
     return (
       <div className="App">
         <Header user={user}/>
+        <Link to='/articles/all'>Articles</Link>
         <Router>
           <ListArticleLayout path='/articles/*' user={user}/>
-          <ArticleLayout path='/article' user={user}/>
+          <SingleArticleLayout path='/article/:article_id' user={user}/>
         </Router>
       </div>
     );

@@ -13,7 +13,7 @@ export default class LiArticle extends Component {
         const art = this.state.art || this.props.art
         return (
           <ul key={art.article_id} className="LiArticle">
-            <li><Link to={`/articles/${art.article_id}`}>{art.title}</Link></li>
+            <li><Link to={`/article/${art.article_id}`}>{art.title}</Link></li>
             <li>Author: {art.author}</li>
             <li>Date listed: {art.created_at}</li>
             <li>Comments: {art.comment_count}</li>

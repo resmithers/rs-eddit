@@ -16,8 +16,8 @@ export default class ListArticleLayout extends Component {
     articles: []
   }
 
-  componentDidCatch (err, info) {
-    console.log(err, info)
+  componentDidMount () {
+    this.fetchArticles()
   }
 
   displayTopics = () => {
@@ -39,6 +39,7 @@ export default class ListArticleLayout extends Component {
       <div className='grid'>
         <Topics topics={topics} fetchTopics={this.displayTopics}/>
         <Router primary={false}>
+          <Articles path='/all' articles={articles} fetchArticles={this.fetchArticles}/>
           <Articles path='/:topics' articles={articles} fetchArticles={this.fetchArticles}/>
         </Router>
       </div>
