@@ -9,3 +9,7 @@ export const serverGetRequest = endpoints => (
 export const serverPatchRequest = (endpoints, data) => (
   axios.patch(BE_URL + endpoints, { inc_votes: data })
 );
+
+export const serverDeleteRequest = (endpoints) => {
+  axios.delete(BE_URL + endpoints);
+};
