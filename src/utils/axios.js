@@ -1,0 +1,11 @@
+import axios from 'axios';
+
+const BE_URL = 'https://rs-knews.herokuapp.com/api/';
+
+export const serverGetRequest = endpoints => (
+  axios.get(BE_URL + endpoints)
+);
+
+export const serverPatchRequest = (endpoints, data) => (
+  axios.patch(BE_URL + endpoints, { inc_votes: data })
+);

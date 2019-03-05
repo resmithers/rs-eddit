@@ -4,10 +4,10 @@ import { Router } from '@reach/router'
 import Header from './Components/Header';
 import ArticleLayout from './Components/ArticleLayout';
 import './App.css';
-import TopicLayout from './Components/TopicLayout';
+import ListArticleLayout from './Components/ListArticleLayout';
 
 // eslint-disable-next-line react/prefer-stateless-function
-class App extends Component {
+export default class App extends Component {
   state = {
     user: 'test_user'
   }
@@ -17,12 +17,10 @@ class App extends Component {
       <div className="App">
         <Header user={user}/>
         <Router>
-          <TopicLayout path='/topics/*' user={user}/>
-          <ArticleLayout path='/articles' user={user}/>
+          <ListArticleLayout path='/articles/*' user={user}/>
+          <ArticleLayout path='/article' user={user}/>
         </Router>
       </div>
     );
   }
 }
-
-export default App;

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 function Header({ user }) {
   return (
-    <div>
-      <p>rs-eddit</p>
-      <p>Logged in as: {user}</p>
+    <div className="headerGrid">
+      <h1 className="title">rs-eddit</h1>
+      <h3 className="logged">Logged in as: {user}</h3>
     </div>
   );
 }

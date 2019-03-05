@@ -1,26 +1,41 @@
-.App {
-  text-align: center;
+h1 {
+  text-align: center
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.headerGrid {
+  display: grid;
+  width: 95vw;
+  grid-template-columns: 3fr 1fr;
+  grid-template-areas: 'title user'
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.title {
+  grid-area: title
 }
 
-.App-link {
-  color: #61dafb;
+.logged_in {
+  grid-area: user;
+  text-align: right
+}
+
+.grid {
+  display: grid;
+  width: 95vw;
+  grid-template-columns: 1fr 4fr;
+  grid-template-areas: 'top art';
+}
+
+.topics {
+  grid-area: top
+}
+
+.articles {
+  grid-area: art;
+  overflow-y: scroll
+}
+
+.LiArticle {
+  padding-bottom: 5%;
 }
 
 ul {

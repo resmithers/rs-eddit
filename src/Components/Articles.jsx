@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Link } from '@reach/router'
 import PropTypes from 'prop-types'
+import LiArticle from './LiArticle';
 
 export default class Articles extends Component {
   static propTypes = {
@@ -20,10 +20,8 @@ export default class Articles extends Component {
   render() {
     const { articles } = this.props
     return (
-      <ul>
-        {articles.map((art, i) => {
-          return <Link key={i} to={`/articles/${art.article_id}`}><li>{art.title || art}</li></Link>
-        })}
+      <ul className='articles'>
+        {articles.map((art, i) =><LiArticle key={i} art={art} updateVotes={this.updateVotes}/>)}
       </ul>
     )
   }

@@ -14,7 +14,7 @@ export default class Topics extends Component {
   render() {
     const { topics } = this.props
     return (
-      <ul>
+      <ul className='topics'>
         {topics.map((topic, i) => {
           return <Link key={i} to={`${topic.slug}`}><li >{topic.slug}</li></Link>
         })}

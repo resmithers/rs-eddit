@@ -2,32 +2,32 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Topics from './Topics';
 import Articles from './Articles';
-import axios from 'axios';
 import { Router } from '@reach/router';
+import querystring from 'querystring'
+import {serverGetRequest} from '../utils/axios'
 
-export default class TopicLayout extends Component {
+export default class ListArticleLayout extends Component {
   static propTypes = {
     user: PropTypes.string.isRequired
   }
 
   state = {
-    topics: ["Aardvarks", 'Bees', "Cats"],
-    articles: ['I see articles', 'But these aren\'t real articles', 'Are you sure though?']
+    topics: [],
+    articles: []
   }
 
-  fetchTopics = () => {
-    axios
-      .get('https://rs-knews.herokuapp.com/api/topics')
-      .then(({data}) => {
-        this.setState({topics:data.topics})
-      })
+  componentDidCatch (err, info) {
+    console.log(err, info)
+  }
+
+  displayTopics = () => {
+    serverGetRequest('topics')
+    .then(({ data }) => this.setState({ topics: data.topics }));
   }
 
   fetchArticles = (topic = '') => {
-    axios
-      .get(`https://rs-knews.herokuapp.com/api/articles${topic && '?topic=' + topic}`)
+    serverGetRequest('articles?' + querystring.stringify({topic}))
       .then(({data}) => {
-        console.log(data)
         this.setState({ articles: data.articles})
       })
   }
@@ -36,9 +36,9 @@ export default class TopicLayout extends Component {
 
     const { topics, articles } = this.state
     return (
-      <div>
-        <Topics topics={topics} fetchTopics={this.fetchTopics}/>
-        <Router>
+      <div className='grid'>
+        <Topics topics={topics} fetchTopics={this.displayTopics}/>
+        <Router primary={false}>
           <Articles path='/:topics' articles={articles} fetchArticles={this.fetchArticles}/>
         </Router>
       </div>
