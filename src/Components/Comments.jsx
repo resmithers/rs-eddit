@@ -29,7 +29,7 @@ export default class Comments extends Component {
                     <br/>
                     <Votes comment_id={comment.comment_id} votes={comment.votes}/>
                     <br/>
-                    <Delete comment_id={comment.comment_id} reRender={this.reRender}/>
+                    <Delete type='comment' comment_id={comment.comment_id}/>
                 </ul>
             </li>
             ))}

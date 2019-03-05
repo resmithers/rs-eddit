@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { serverGetRequest } from '../utils/axios';
 import Votes from './Votes'
 import Comments from './Comments'
+import Delete from './Delete';
 
 export default class SingleArticleLayout extends Component {
   static propTypes = {
@@ -36,6 +37,8 @@ export default class SingleArticleLayout extends Component {
             <li>{art.body}</li>
             <br/>
             <Votes article_id={art.article_id} votes={art.votes}/>
+            <Delete type='article' article_id={art.article_id}/>
+            <br/>
             <br/>
             <li>Comments: {art.comment_count}</li>
             <br/>
