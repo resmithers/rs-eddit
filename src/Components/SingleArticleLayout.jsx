@@ -27,6 +27,7 @@ export default class SingleArticleLayout extends Component {
   }
 
   render() {
+    const { user } = this.props
     const {article: art} = this.state
     return (
       <div className="SingleArticle">
@@ -38,11 +39,11 @@ export default class SingleArticleLayout extends Component {
             <br/>
             <Votes article_id={art.article_id} votes={art.votes}/>
             <br/>
-            <Delete type='article' article_id={art.article_id}/>
+            {art.author === user && <Delete type='article' article_id={art.article_id}/>}
             <br/>
             <li>Comments: {art.comment_count}</li>
             <br/>
-            {+art.comment_count !== 0 && <Comments article_id={art.article_id}/>}
+            {+art.comment_count !== 0 && <Comments article_id={art.article_id} user={user}/>}
         </ul>}      
       </div>
     )

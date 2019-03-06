@@ -30,8 +30,8 @@ export default class AddArticle extends Component {
 
     handleChange = (e) => {
         const t = e.target
-        this.setState(p => {
-            return {newArticle: {...p.newArticle, [t.name]: t.value}}
+        this.setState(({newArticle}) => {
+            return {newArticle: {...newArticle, [t.name]: t.value}}
         })
     }
 
@@ -44,8 +44,8 @@ export default class AddArticle extends Component {
             <form onSubmit={this.handleArticleSubmit}>
                 <input name='title' type="text" placeholder="title" onChange={this.handleChange}/>
                 <br/>
-                <select name='topic' onChange={this.handleChange}>
-                    <option disabled selected >Select topic...</option>
+                <select name='topic' onChange={this.handleChange} defaultValue='Select topic...'>
+                    <option disabled >Select topic...</option>
                     <option>Add new topic...</option>
                     {topics.map(topic => <option key={topic.slug} value={topic.slug}>{topic.slug}</option>)}
                 </select>
@@ -53,7 +53,7 @@ export default class AddArticle extends Component {
                     {authors.map(author => <option key={author.username} value={author.username}>{author.username}</option>)}
                 </select>
                 <br/>
-                <textarea onChange={this.handleChange} name='body' placeholder='start writing your article here...'/>
+                <textarea onChange={this.handleChange} name='body' placeholder='start writing your article here...' rows='5' cols='50'/>
                 <br/>
                 <button>Submit</button>
             </form>

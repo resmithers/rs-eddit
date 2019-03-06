@@ -14,11 +14,6 @@ export default class Comments extends Component {
         .then(({data: {comments}}) => this.setState({comments}))
     }
 
-    componentDidUpdate() {
-      serverGetRequest('articles/' + this.props.article_id + '/comments')
-        .then(({data: {comments}}) => this.setState({comments}))
-    }
-
     render() {
       return (
         <ul>
@@ -29,7 +24,7 @@ export default class Comments extends Component {
                     <br/>
                     <Votes comment_id={comment.comment_id} votes={comment.votes}/>
                     <br/>
-                    <Delete type='comment' comment_id={comment.comment_id}/>
+                    {comment.author === this.props.user && <Delete type='comment' comment_id={comment.comment_id}/>}
                 </ul>
             </li>
             ))}
