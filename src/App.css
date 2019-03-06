@@ -26,7 +26,7 @@ h1 {
 }
 
 .topics {
-  grid-area: top
+  grid-area: top;
 }
 
 .articles {
@@ -53,6 +53,14 @@ ul {
 
 li {
   padding: none;
+}
+
+nav {
+  text-align: center;
+}
+
+.formpage {
+  text-align: center;
 }
 
 @keyframes App-logo-spin {

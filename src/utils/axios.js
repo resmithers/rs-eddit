@@ -6,6 +6,10 @@ export const serverGetRequest = endpoints => (
   axios.get(BE_URL + endpoints)
 );
 
+export const serverPostRequest = (endpoints, data) => (
+  axios.post(BE_URL + endpoints, { ...data })
+);
+
 export const serverPatchRequest = (endpoints, data) => (
   axios.patch(BE_URL + endpoints, { inc_votes: data })
 );

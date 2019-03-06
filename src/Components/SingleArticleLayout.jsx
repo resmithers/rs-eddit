@@ -37,12 +37,12 @@ export default class SingleArticleLayout extends Component {
             <li>{art.body}</li>
             <br/>
             <Votes article_id={art.article_id} votes={art.votes}/>
-            <Delete type='article' article_id={art.article_id}/>
             <br/>
+            <Delete type='article' article_id={art.article_id}/>
             <br/>
             <li>Comments: {art.comment_count}</li>
             <br/>
-            <Comments article_id={art.article_id}/>
+            {+art.comment_count !== 0 && <Comments article_id={art.article_id}/>}
         </ul>}      
       </div>
     )
