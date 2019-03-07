@@ -12,7 +12,7 @@ export default class Comments extends Component {
     }
 
     componentDidMount() {
-        serverGetRequest('articles/' + this.props.article_id + '/comments')
+        this.props.comment_count > 0 && serverGetRequest('articles/' + this.props.article_id + '/comments')
         .then(({data: {comments}}) => this.setState({comments}))
     }
 
@@ -31,14 +31,13 @@ export default class Comments extends Component {
       .then(() => {
         serverGetRequest('articles/' + this.props.article_id + '/comments')
         .then(({data: {comments}}) => this.setState({comments}))
+        .catch(() => this.setState({comments: []}))
       })
     }
 
     handleNewComment = () => {
-      console.log('handler')
       serverGetRequest('articles/' + this.props.article_id + '/comments')
         .then(({data: {comments}}) => {
-          console.log(comments)
           this.setState({comments})
         })
     }
@@ -53,7 +52,7 @@ export default class Comments extends Component {
           <li/>
             <AddComment user={this.props.user} article_id={this.props.article_id} handleNewComment={this.handleNewComment}/>
           <li/>
-          {this.state.comments.map(comment => (
+          {(this.state.comments !== []) && this.state.comments.map(comment => (
             <li key={comment.comment_id} className='liComment'>
                 <ul>
                     <li>{comment.author} ({comment.created_at}) : {comment.body}</li>
@@ -64,8 +63,12 @@ export default class Comments extends Component {
                 </ul>
             </li>
             ))}
-            <button disabled={this.state.p <= 1} onClick={() => this.handlePageChange(-1)}>previous</button>
-            <button disabled={this.state.p >= Math.ceil(this.props.comment_count / this.state.limit)} onClick={() => this.handlePageChange(1)}>next</button>
+            {this.props.comment_count > 0 && (
+            <div>
+              <button disabled={this.state.p <= 1} onClick={() => this.handlePageChange(-1)}>previous</button>
+              <button disabled={this.state.p >= Math.ceil(this.props.comment_count / this.state.limit)} onClick={() => this.handlePageChange(1)}>next</button>
+            </div>
+            )}
         </ul>
       );
     }

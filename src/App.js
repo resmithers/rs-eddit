@@ -5,8 +5,8 @@ import SingleArticleLayout from './Components/SingleArticleLayout';
 import './App.css';
 import ListArticleLayout from './Components/ListArticleLayout';
 import AddArticle from './Components/AddArticle';
-import AddComment from './Components/AddComment';
-import Login from './Components/Login';
+import AddUser from './Components/AddUser'
+import Handle404 from './Components/Handle404';
 
 export default class App extends Component {
   state = {
@@ -23,28 +23,32 @@ export default class App extends Component {
     window.localStorage.setItem('user', user)
   }
 
+  handleLogout = (e) => {
+    e.preventDefault()
+    this.setState({user: null})
+    window.localStorage.removeItem('user')
+  }
+
   render() {
     const {user} = this.state
     return (
       <div className="App">
-        <Header user={user}/>
+        <Header user={user} handleLogin={this.handleLogin} handleLogout={this.handleLogout}/>
         <nav>
           <Link to='/articles/all'>Articles</Link>
           <span> </span>
           <Link to='/add/article'>Add article</Link>
           <span> </span>
-          <Link to='/login'>Change user</Link>
         </nav>
-        {!this.state.user && <Router>
-          <Login path='*' handleLogin={this.handleLogin}/>
-        </Router>}
         {user && <Router>
-          <ListArticleLayout path='/articles/*' user={user}/>
+          <Handle404 default/>
+          <ListArticleLayout path='/articles/*/' user={user}/>
           <SingleArticleLayout path='/article/:article_id' user={user}/>
           <AddArticle path='/add/article' user={user}/>
-          <AddComment path='/add/articles/:article_id/comments' user={user}/>
-          <Login path='/login' handleLogin={this.handleLogin}/>
         </Router>}
+        <Router>
+          <AddUser path='/add/user' />
+        </Router>
       </div>
     );
   }

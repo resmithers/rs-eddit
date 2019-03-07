@@ -30,7 +30,7 @@ export default class SingleArticleLayout extends Component {
   handleDelete = () => {
     serverDeleteRequest(this.props.type + 's/' + (this.props.comment_id || this.props.article_id))
     if (this.props.type === 'article') {navigate('/articles/all')}
-}
+  }
 
   render() {
     const { user } = this.props
@@ -49,7 +49,7 @@ export default class SingleArticleLayout extends Component {
             <br/>
             <li>Comments: {art.comment_count}</li>
             <br/>
-            {+art.comment_count !== 0 && <Comments article_id={art.article_id} user={user} comment_count={art.comment_count}/>}
+            <Comments article_id={art.article_id} user={user} comment_count={art.comment_count}/>
         </ul>}      
       </div>
     )
