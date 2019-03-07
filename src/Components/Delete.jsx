@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
-import { serverDeleteRequest } from '../utils/axios'
+import req from '../utils/axios'
 import {navigate} from '@reach/router'
 
 export default class Delete extends Component {
-    state = {}
-
     handleDelete = () => {
-      serverDeleteRequest(this.props.type + 's/' + (this.props.comment_id || this.props.article_id))
-      if (this.props.type === 'article') {navigate('/articles/all')}
+      const { type, comment_id, article_id, onDelete} = this.props
+      req
+        .delete(`${type}s/${comment_id || article_id}`)
+        .then(() => {
+          comment_id && onDelete()
+          article_id && navigate('/articles/all')
+        })
   }
 
     render() {
-      return (<button onClick={this.handleDelete}>Delete {this.props.type} {this.props.comment_id}</button>);
+      const { type, comment_id } = this.props
+      return (<button onClick={this.handleDelete}>Delete {type} {comment_id}</button>);
     }
 }

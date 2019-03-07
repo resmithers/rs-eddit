@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import Topics from './Topics';
 import Articles from './Articles';
 import { Router } from '@reach/router';
-import querystring from 'querystring'
-import {serverGetRequest} from '../utils/axios'
+import Users from './Users';
+import req from '../utils/axios'
 
 export default class ListArticleLayout extends Component {
   static propTypes = {
@@ -21,23 +21,23 @@ export default class ListArticleLayout extends Component {
   }
 
   displayTopics = () => {
-    serverGetRequest('topics')
-    .then(({ data }) => this.setState({ topics: data.topics }));
+    req
+      .get('/topics')
+      .then(({ data }) => this.setState({ topics: data.topics }));
   }
 
-  fetchArticles = (topic = '') => {
-    serverGetRequest('articles?' + querystring.stringify({topic}))
-      .then(({data}) => {
-        this.setState({ articles: data.articles})
-      })
+  fetchArticles = (topic) => {
+    req
+      .get('/articles', {params: { topic } })
+      .then(({ data: {articles} }) => this.setState({ articles }))
   }
 
   render() {
-
     const { topics, articles } = this.state
     return (
       <div className='grid'>
         <Topics topics={topics} fetchTopics={this.displayTopics}/>
+        <Users/>
         <Router primary={false}>
           <Articles path='/all' articles={articles} fetchArticles={this.fetchArticles}/>
           <Articles path='/:topics' articles={articles} fetchArticles={this.fetchArticles}/>

@@ -18,10 +18,10 @@ export default class Articles extends Component {
   }
 
   render() {
-    const { articles } = this.props
+    const { articles, topics } = this.props
     return (
       <ul className='articles'>
-        {articles.map((art, i) =><LiArticle key={i} art={art} updateVotes={this.updateVotes}/>)}
+        {articles.map((art, i) =><LiArticle key={i} art={art} updateVotes={this.updateVotes} topic={topics}/>)}
       </ul>
     )
   }

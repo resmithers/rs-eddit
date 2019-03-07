@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import {serverGetRequest, serverPostRequest} from '../utils/axios'
 import { navigate } from '@reach/router'
 // import { handleChange } from '../utils/handle'
@@ -6,7 +6,8 @@ import { navigate } from '@reach/router'
 export default class AddArticle extends Component {
     state = {
         topics: [],
-        authors: []
+        postBody: {},
+        newTopic: false
     }
 
     componentDidMount() {
@@ -14,41 +15,52 @@ export default class AddArticle extends Component {
     }
 
     fetchLists = () => {
-        return Promise.all([serverGetRequest('topics'), serverGetRequest('users')])
-        .then(([topics, users]) => this.setState({ topics: topics.data.topics, authors: users.data.users }))
+        return serverGetRequest('topics')
+        .then(topics => this.setState({ topics: topics.data.topics }))
     }
 
     handleArticleSubmit = (e) => {
         e.preventDefault()
-        serverPostRequest('/articles', this.state.postBody)
-        .then(({data: {article}}) => {
-            navigate(`/article/${article.article_id}`)
-        })
+        const {user:author} = this.props
+        const {newTopic, postBody: {topic:slug, description}} = this.state
+        if (newTopic) {
+            serverPostRequest('/topics', {slug, description})
+            .then(() => {
+                serverPostRequest('/articles', {...this.state.postBody, author})
+                .then(({data: {article}}) => navigate(`/article/${article.article_id}`))
+            })
+        } else serverPostRequest('/articles', {...this.state.postBody, author})
+                .then(({data: {article}}) => navigate(`/article/${article.article_id}`))
     }
 
     handleChange = (e) => {
         const t = e.target;
-        this.setState(({ postBody }) => ({ postBody: { ...postBody, [t.name]: t.value } }));
+        if (t.value !== 'Add new topic...') {
+            this.setState(({ postBody }) => ({ postBody: { ...postBody, [t.name]: t.value } }))
+        } else this.setState({newTopic: true})
     }
 
     render() {
-        const {topics, authors} = this.state
+        const {topics, newTopic} = this.state
       return (
         <div className='formpage'>
             <h2>Add new article:</h2>
             <form onSubmit={this.handleArticleSubmit}>
-                <input name='title' type="text" placeholder="title" onChange={this.handleChange}/>
+                <input required name='title' type="text" placeholder="title" onChange={this.handleChange}/>
                 <br/>
-                <select name='topic' onChange={this.handleChange} defaultValue='Select topic...'>
-                    <option disabled >Select topic...</option>
-                    <option>Add new topic...</option>
-                    {topics.map(topic => <option key={topic.slug} value={topic.slug}>{topic.slug}</option>)}
-                </select>
-                <select name='author' onChange={this.handleChange}>
-                    {authors.map(author => <option key={author.username} value={author.username}>{author.username}</option>)}
-                </select>
+                    <select required name='topic' onChange={this.handleChange} defaultValue='Select topic...'>
+                        <option disabled >Select topic...</option>
+                        <option >Add new topic...</option>
+                        {topics.map(topic => <option key={topic.slug} value={topic.slug}>{topic.slug}</option>)}
+                    </select> 
+                    {newTopic && (
+                        <Fragment>
+                            <input name='topic' onChange={this.handleChange} type='text' placeholder='new topic...'></input>
+                            <input name='description' onChange={this.handleChange} type='text' placeholder='topic description'></input>
+                        </Fragment>
+                    )}
                 <br/>
-                <textarea onChange={this.handleChange} name='body' placeholder='start writing your article here...' rows='5' cols='50'/>
+                <textarea required onChange={this.handleChange} name='body' placeholder='start writing your article here...' rows='5' cols='50'/>
                 <br/>
                 <button>Submit</button>
             </form>

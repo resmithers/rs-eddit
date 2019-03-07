@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Link } from '@reach/router';
 import Votes from './Votes';
+import moment from 'moment'
 
 export default class LiArticle extends Component {
     state = {
@@ -15,9 +16,9 @@ export default class LiArticle extends Component {
           <ul key={art.article_id} className="LiArticle">
             <li><Link to={`/article/${art.article_id}`}>{art.title}</Link></li>
             <li>Author: {art.author}</li>
-            <li>Date listed: {art.created_at}</li>
+            <li>Date listed: {moment(art.created_at).format('D MMM YY')}</li>
             <li>Comments: {art.comment_count}</li>
-            <Votes article_id={art.article_id} votes={art.votes}/>
+            <Votes article_id={art.article_id} votes={art.votes} target='articles'/>
           </ul>
         );    
     }
