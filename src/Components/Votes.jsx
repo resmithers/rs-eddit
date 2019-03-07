@@ -16,7 +16,10 @@ export default class Votes extends Component {
       const { votes } = this.props
       const { hasVoted } = this.state
       return (
-        <li>Votes: {votes + hasVoted} <button type="button" onClick={() => this.handleVote(1)}>UpVote</button> <button type="button" onClick={() => this.handleVote(-1)}>DownVote</button></li>
+        <li>Votes: {votes + hasVoted} 
+        <button type="button" onClick={() => this.handleVote(1)}>UpVote</button> 
+        <button type="button" onClick={() => this.handleVote(-1)}>DownVote</button>
+        </li>
       );
     }
 }

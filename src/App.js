@@ -42,10 +42,9 @@ export default class App extends Component {
           <ListArticleLayout path='/articles/*' user={user}/>
           <SingleArticleLayout path='/article/:article_id' user={user}/>
           <AddArticle path='/add/article' user={user}/>
-          <AddComment path='/add/comment' user={user}/>
+          <AddComment path='/add/articles/:article_id/comments' user={user}/>
           <Login path='/login' handleLogin={this.handleLogin}/>
         </Router>}
-        
       </div>
     );
   }

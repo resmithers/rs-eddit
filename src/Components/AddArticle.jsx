@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import {serverGetRequest, serverPostRequest} from '../utils/axios'
 import { navigate } from '@reach/router'
+// import { handleChange } from '../utils/handle'
 
 export default class AddArticle extends Component {
     state = {
         topics: [],
-        authors: [],
-        newArticle: {}
+        authors: []
     }
 
     componentDidMount() {
@@ -15,29 +15,24 @@ export default class AddArticle extends Component {
 
     fetchLists = () => {
         return Promise.all([serverGetRequest('topics'), serverGetRequest('users')])
-        .then(([topics, users]) => {
-        this.setState({ topics: topics.data.topics, authors: users.data.users });
-        })
+        .then(([topics, users]) => this.setState({ topics: topics.data.topics, authors: users.data.users }))
     }
 
     handleArticleSubmit = (e) => {
         e.preventDefault()
-        serverPostRequest('/articles', this.state.newArticle)
+        serverPostRequest('/articles', this.state.postBody)
         .then(({data: {article}}) => {
             navigate(`/article/${article.article_id}`)
         })
     }
 
     handleChange = (e) => {
-        const t = e.target
-        this.setState(({newArticle}) => {
-            return {newArticle: {...newArticle, [t.name]: t.value}}
-        })
+        const t = e.target;
+        this.setState(({ postBody }) => ({ postBody: { ...postBody, [t.name]: t.value } }));
     }
 
     render() {
         const {topics, authors} = this.state
-        console.dir(this.state.newArticle)
       return (
         <div className='formpage'>
             <h2>Add new article:</h2>
