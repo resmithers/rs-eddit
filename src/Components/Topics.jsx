@@ -15,9 +15,7 @@ export default class Topics extends Component {
     const { topics } = this.props
     return (
       <ul className='topics'>
-        {topics.map((topic, i) => {
-          return <Link key={i} to={`${topic.slug}`}><li >{topic.slug}</li></Link>
-        })}
+        {topics.map(({slug}) => <Link key={slug} to={slug}><li >{slug}</li></Link>)}
       </ul>
     )
   }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {serverPostRequest} from '../utils/axios'
+import req from '../utils/axios'
 
 export default class AddComment extends Component {
     state = {
@@ -10,7 +10,7 @@ export default class AddComment extends Component {
       e.preventDefault()
       const { article_id, user: author } = this.props
       const { postBody } = this.state
-      serverPostRequest(`articles/${article_id}/comments`, {...postBody, author})
+      req.post(`articles/${article_id}/comments`, {...postBody, author})
         .then(() => {
           this.props.handleNewComment()
           document.querySelector('form').reset()

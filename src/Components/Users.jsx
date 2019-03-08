@@ -19,9 +19,7 @@ export default class Users extends Component {
       const { users } = this.state
     return (
       <ul className='users'>
-        {users.map((user, i) => {
-          return <Link key={i} to={user.username}><li >{user.username}</li></Link>
-        })}
+        {users.map(({username}) => <Link key={username} to={`/users/${username}`}><li >{username}</li></Link>)}
       </ul>
     )
   }

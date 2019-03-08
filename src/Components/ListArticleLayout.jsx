@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import Topics from './Topics';
 import Articles from './Articles';
 import { Router } from '@reach/router';
-import Users from './Users';
 import req from '../utils/axios'
 
 export default class ListArticleLayout extends Component {
@@ -37,7 +36,6 @@ export default class ListArticleLayout extends Component {
     return (
       <div className='grid'>
         <Topics topics={topics} fetchTopics={this.displayTopics}/>
-        <Users/>
         <Router primary={false}>
           <Articles path='/all' articles={articles} fetchArticles={this.fetchArticles}/>
           <Articles path='/:topics' articles={articles} fetchArticles={this.fetchArticles}/>

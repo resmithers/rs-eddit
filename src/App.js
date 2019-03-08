@@ -7,6 +7,7 @@ import ListArticleLayout from './Components/ListArticleLayout';
 import AddArticle from './Components/AddArticle';
 import AddUser from './Components/AddUser'
 import Handle404 from './Components/Handle404';
+import Users from './Components/Users';
 
 export default class App extends Component {
   state = {
@@ -35,14 +36,14 @@ export default class App extends Component {
       <div className="App">
         <Header user={user} handleLogin={this.handleLogin} handleLogout={this.handleLogout}/>
         <nav>
-          <Link to='/articles/all'>Articles</Link>
-          <span> </span>
-          <Link to='/add/article'>Add article</Link>
-          <span> </span>
+          <Link to='/articles/all'>Articles </Link>
+          <Link to='/users'>Users </Link>
+          <Link to='/add/article'>Add article </Link>
         </nav>
         {user && <Router>
           <Handle404 default/>
           <ListArticleLayout path='/articles/*/' user={user}/>
+          <Users path='/users' user={user}/>
           <SingleArticleLayout path='/article/:article_id' user={user}/>
           <AddArticle path='/add/article' user={user}/>
         </Router>}

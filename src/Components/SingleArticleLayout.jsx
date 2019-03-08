@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { serverGetRequest, serverDeleteRequest } from '../utils/axios';
-import {navigate} from '@reach/router'
+import req from '../utils/axios';
 import Votes from './Votes'
 import CommentList from './CommentList'
 import Delete from './Delete';
@@ -22,14 +21,13 @@ export default class SingleArticleLayout extends Component {
 
   fetchSingleArticle = () => {
     const { article_id } = this.props
-    serverGetRequest(`articles/${article_id}`)
+    req.get(`articles/${article_id}`)
       .then(({data: {article}}) => this.setState({article}))
   }
 
   handleDelete = () => {
     const {type, comment_id, article_id} =  this.props
-    serverDeleteRequest(`${type}s/${comment_id || article_id}`)
-    if (this.props.type === 'article') {navigate('/articles/all')}
+    req.delete(`${type}s/${comment_id || article_id}`)
   }
 
   render() {
