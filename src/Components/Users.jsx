@@ -22,7 +22,7 @@ export default class Users extends Component {
     return (
       <>
       <ul className='users'>
-        {users.map(({username}) => <Link key={username} to={`/users/${username}`}><li >{username}</li></Link>)}
+        {users.map(({username}) => <Link key={username} to={`/${username}`}><li >{username}</li></Link>)}
       </ul>
       <Router><UserCard path=':user_id' loggedInUser={user}/></Router>
 
