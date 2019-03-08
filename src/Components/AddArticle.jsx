@@ -22,10 +22,11 @@ export default class AddArticle extends Component {
     handleArticleSubmit = (e) => {
         e.preventDefault()
         const {user:author} = this.props
-        const {newTopic, postBody: {topic, description, ...postBody}} = this.state
+        const {newTopic, postBody: {topic, description, ...a}} = this.state
 
-        Promise.resolve(newTopic && req.post('topics', {slug:topic, description}))
-            .then(() => req.post('/articles', {...postBody, topic, author}))
+        Promise
+            .resolve(newTopic && req.post('topics', {slug:topic, description}))
+            .then(() => req.post('/articles', {...a, topic, author}))
             .then(({data: {article}}) => navigate(`/article/${article.article_id}`))
     }
 

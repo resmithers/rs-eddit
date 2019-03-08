@@ -43,7 +43,7 @@ export default class App extends Component {
         {user && <Router>
           <Handle404 default/>
           <ListArticleLayout path='/articles/*/' user={user}/>
-          <Users path='/users' user={user}/>
+          <Users path='/users/*' user={user}/>
           <SingleArticleLayout path='/article/:article_id' user={user}/>
           <AddArticle path='/add/article' user={user}/>
         </Router>}

@@ -15,19 +15,16 @@ export default class ListArticleLayout extends Component {
     articles: []
   }
 
-  componentDidMount () {
-    this.fetchArticles()
-  }
-
   displayTopics = () => {
     req
       .get('/topics')
       .then(({ data }) => this.setState({ topics: data.topics }));
   }
 
-  fetchArticles = (topic) => {
+  fetchArticles = (topic, sort_by) => {
+    console.log(sort_by)
     req
-      .get('/articles', {params: { topic } })
+      .get('/articles', {params: { topic, sort_by } })
       .then(({ data: {articles} }) => this.setState({ articles }))
   }
 
@@ -37,8 +34,8 @@ export default class ListArticleLayout extends Component {
       <div className='grid'>
         <Topics topics={topics} fetchTopics={this.displayTopics}/>
         <Router primary={false}>
-          <Articles path='/all' articles={articles} fetchArticles={this.fetchArticles}/>
-          <Articles path='/:topics' articles={articles} fetchArticles={this.fetchArticles}/>
+          <Articles path='/all' fetchArticles={this.fetchArticles}/>
+          <Articles path='/:topics' fetchArticles={this.fetchArticles}/>
         </Router>
       </div>
     )
