@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Router, Link } from '@reach/router'
+import { Router, Link, Redirect } from '@reach/router'
 import Header from './Components/Header';
 import SingleArticleLayout from './Components/SingleArticleLayout';
 import './App.css';
@@ -42,6 +42,7 @@ export default class App extends Component {
         </nav>
         {user && <Router>
           <Handle404 default/>
+          <Redirect from='/' to='/articles/all'/>
           <ListArticleLayout path='/articles/*/' user={user}/>
           <Users path='/users/*' user={user}/>
           <SingleArticleLayout path='/article/:article_id' user={user}/>
