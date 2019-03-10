@@ -3,6 +3,9 @@ import { navigate } from '@reach/router';
 import {serverPostRequest} from '../utils/axios'
 
 export default class AddUser extends Component {
+    state = {
+      postBody: {}
+    }
     
     handleUserSubmit = (e) => {
       e.preventDefault()

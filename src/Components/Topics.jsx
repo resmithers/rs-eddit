@@ -1,22 +1,11 @@
-import React, { Component } from 'react'
-import { Link } from '@reach/router'
-import PropTypes from 'prop-types'
+import React from 'react';
+import { Link } from '@reach/router';
 
-export default class Topics extends Component {
-  static propTypes = {
-    topics: PropTypes.array
-  }
 
-  componentDidMount () {
-    this.props.fetchTopics()
-  }
-
-  render() {
-    const { topics } = this.props
-    return (
-      <ul className='topics'>
-        {topics.map(({slug}) => <Link key={slug} to={slug}><li >{slug}</li></Link>)}
-      </ul>
-    )
-  }
+export default function Topics({ topics }) {
+  return (
+    <ul>
+      {topics.map(({ slug }) => <Link key={slug} to={slug}><li>{slug}</li></Link>)}
+    </ul>
+  );
 }

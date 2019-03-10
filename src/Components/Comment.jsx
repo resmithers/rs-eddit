@@ -10,7 +10,6 @@ export default class Comment extends Component {
 
     onDelete = () => {
         this.setState({deleted: true})
-        this.props.handleDelete()
     }
 
     render() {

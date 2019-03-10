@@ -15,25 +15,30 @@ export default class CommentList extends Component {
     }
 
     componentDidMount() {
-      this.props.comment_count > 0 && this.getComments()
+      if (this.props.comment_count > 0) this.getComments()
     }
 
-    componentDidUpdate(a, pState) {
-      const { sort_by, order } = this.state;
-      (pState.p !== this.state.p || pState.sort_by !== sort_by || pState.order !== order) && this.getComments()
+    componentDidUpdate(z, pState) {
+      const { sort_by, order, p } = this.state;
+
+      const a = pState.p !== p;
+      const b = pState.sort_by !== sort_by;
+      const c = pState.order !== order;
+
+      if (a || b || c) this.getComments()
     }
 
     getComments = (d = 0) => {
-      const { p, sort_by, order } = this.state
+      const { p, limit, sort_by, order } = this.state
       const { article_id:id } = this.props
       req
-        .get(`articles/${id}/comments`, {params: { p, sort_by, order }})
+        .get(`articles/${id}/comments`, {params: { p, sort_by, order, limit }})
         .then(({data: {comments}}) => this.setState(({comment_count}) => ({comments, comment_count: comment_count + d})))
     }
 
-    handleOrder = (e, q) => {
+    handleOrder = (e, str) => {
       const {value} = e.target
-      this.setState({[q]: value})
+      this.setState({[str]: value})
     }
 
     handlePageChange = (dir) => this.setState(({p}) => ({p: p + dir}))
@@ -59,7 +64,7 @@ export default class CommentList extends Component {
           </form>
           {comment_count > 0 && (
             <>
-              {comments.map(c => <Comment key={c.comment_id} comment={c} user={user} handleDelete={() => this.getComments(-1)}/>)}
+              {comments.map(c => <Comment key={c.comment_id} comment={c} user={user}/>)}
               <div>
                 <button disabled={p <= 1} onClick={() => this.handlePageChange(-1)}>previous</button>
                 <button disabled={p >= Math.ceil(comment_count / limit)} onClick={() => this.handlePageChange(1)}>next</button>

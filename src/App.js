@@ -8,13 +8,16 @@ import AddArticle from './Components/AddArticle';
 import AddUser from './Components/AddUser'
 import Handle404 from './Components/Handle404';
 import Users from './Components/Users';
+import req from './utils/axios';
 
 export default class App extends Component {
   state = {
-    user: null
+    user: null,
+    topics: []
   }
 
   componentDidMount = () => {
+    this.fetchTopics()
     this.setState({user: window.localStorage.getItem('user')})
   }
 
@@ -30,8 +33,14 @@ export default class App extends Component {
     window.localStorage.removeItem('user')
   }
 
+  fetchTopics = () => {
+    req
+      .get('/topics')
+      .then(({ data: {topics} }) => this.setState({ topics }));
+  }
+
   render() {
-    const {user} = this.state
+    const {user, topics} = this.state
     return (
       <div className="App">
         <Header user={user} handleLogin={this.handleLogin} handleLogout={this.handleLogout}/>
@@ -43,7 +52,7 @@ export default class App extends Component {
         {user && <Router>
           <Handle404 default/>
           <Redirect from='/' to='/articles/all'/>
-          <ListArticleLayout path='/articles/*/' user={user}/>
+          <ListArticleLayout path='/articles/*/' user={user} topics={topics}/>
           <Users path='/users/*' user={user}/>
           <SingleArticleLayout path='/article/:article_id' user={user}/>
           <AddArticle path='/add/article' user={user}/>

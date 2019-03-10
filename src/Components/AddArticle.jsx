@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import req from '../utils/axios'
 import { navigate } from '@reach/router'
 
@@ -6,37 +6,42 @@ export default class AddArticle extends Component {
     state = {
         topics: [],
         postBody: {},
-        newTopic: false
+        showNewTopic: null
     }
 
     componentDidMount() {
         this.fetchLists()
     }
 
+    componentDidUpdate(z, pState) {
+        // if (pState.postBody.topic !== this.state.postBody.topic)
+    }
+
     fetchLists = () => {
         req
         .get('topics')
-        .then(topics => this.setState({ topics: topics.data.topics }))
+        .then(({data: {topics}}) => this.setState({ topics }))
     }
 
     handleArticleSubmit = (e) => {
         e.preventDefault()
         const {user:author} = this.props
-        const {newTopic, postBody: {topic, description, ...a}} = this.state
+        const {showNewTopic, postBody: {topic, description, ...a}} = this.state
 
         Promise
-            .resolve(newTopic && req.post('topics', {slug:topic, description}))
+            .resolve(showNewTopic && req.post('topics', {slug:topic, description}))
             .then(() => req.post('/articles', {...a, topic, author}))
             .then(({data: {article}}) => navigate(`/article/${article.article_id}`))
     }
 
     handleChange = (e) => {
-        const {name, value} = e.target;
-        this.setState(({postBody}) => value === 'Add new topic...' ? {newTopic: true} : { postBody: { ...postBody, [name]: value } })
+        const {name, value, selectedIndex} = e.target
+        if (selectedIndex === 1) this.setState({showNewTopic: 1})
+        this.setState(({postBody}) => ({ postBody: { ...postBody, [name]: value } }))
     }
 
     render() {
-        const {topics, newTopic} = this.state
+        const {topics, showNewTopic} = this.state
       return (
         <div className='formpage'>
             <h2>Add new article:</h2>
@@ -48,12 +53,10 @@ export default class AddArticle extends Component {
                     <option >Add new topic...</option>
                     {topics.map(({slug}) => <option key={slug} value={slug}>{slug}</option>)}
                 </select> 
-                {newTopic && (
-                    <Fragment>
-                        <input name='topic' onChange={this.handleChange} type='text' placeholder='new topic...'></input>
-                        <input name='description' onChange={this.handleChange} type='text' placeholder='topic description'></input>
-                    </Fragment>
-                )}
+                {showNewTopic && (<>
+                    <input name='topic' onChange={this.handleChange} type='text' placeholder='new topic...'></input>
+                    <input name='description' onChange={this.handleChange} type='text' placeholder='topic description'></input>
+                </>)}
                 <br/>
                 <textarea required onChange={this.handleChange} name='body' placeholder='start writing your article here...' rows='5' cols='50'/>
                 <br/>

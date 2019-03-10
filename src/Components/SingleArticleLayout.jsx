@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import req from '../utils/axios';
 import Votes from './Votes'
 import CommentList from './CommentList'
@@ -7,9 +6,6 @@ import Delete from './Delete';
 import moment from 'moment'
 
 export default class SingleArticleLayout extends Component {
-  static propTypes = {
-    user: PropTypes.string.isRequired
-  }
 
   state = {
     article: null

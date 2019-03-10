@@ -10,19 +10,22 @@ export default class Articles extends Component {
   }
 
   componentDidMount () {
-    this.fetchArticles(this.props.topics, this.state.sort_by)
+    this.fetchArticles(this.props.topics)
   }
 
   componentDidUpdate (prevProps, prevState) {
     const { sort_by, order } = this.state
-    if ((prevProps.topics !== this.props.topics) || (prevState.sort_by !== sort_by || prevState.order !== order)) {
-      this.fetchArticles(this.props.topics, sort_by, order)
-    }
+    const { topics } = this.props
+
+    const a = prevProps.topics !== topics;
+    const b = prevState.sort_by !== sort_by;
+    const c = prevState.order !== order;
+
+    if (a || b || c) this.fetchArticles(topics, sort_by, order)
   }
 
-  handleOrder = (e, q) => {
-    const {value} = e.target
-    this.setState({[q]: value})
+  handleOrder = ({target: {name, value}}) => {
+    this.setState({[name]: value})
   }
 
   fetchArticles = (topic, sort_by, order) => {
@@ -32,24 +35,24 @@ export default class Articles extends Component {
   }
 
   render() {
-    const { topics } = this.props
-    const { articles } = this.state
+    const { topics } = this.props;
+    const { articles } = this.state;
     return (
-      <ul className='articles'>
+      <ul>
         <form>
           Sort by: 
-            <select onChange={(e) => this.handleOrder(e, 'sort_by')}>
+            <select name='sort_by' onChange={this.handleOrder}>
               <option default value='created_at'>Date</option>
               <option value='votes'>Votes</option>
               <option value='comment_count'>Comments</option>
             </select>
           Order: 
-          <select onChange={(e) => this.handleOrder(e, 'order')}>
+          <select name='order' onChange={this.handleOrder}>
             <option default value='desc'>desc</option>
             <option value='asc'>asc</option>
           </select>
         </form>
-        {articles.map((art, i) =><LiArticle key={i} art={art} updateVotes={this.updateVotes} topic={topics}/>)}
+        {articles.map((art, i) =><LiArticle key={i} art={art} topic={topics}/>)}
       </ul>
     )
   }
