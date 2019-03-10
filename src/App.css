@@ -65,3 +65,17 @@ nav {
 .formpage {
   text-align: center;
 }
+
+.card {
+  text-align: center;
+  margin-block-start: 2%
+}
+
+.btn-toolbar {
+  justify-content: center
+}
+
+.btn {
+  margin-left: 2%;
+  margin-right: 2%;
+}

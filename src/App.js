@@ -9,6 +9,7 @@ import AddUser from './Components/AddUser'
 import Handle404 from './Components/Handle404';
 import Users from './Components/Users';
 import req from './utils/axios';
+import CardTest from './Components/CardTest';
 
 export default class App extends Component {
   state = {
@@ -50,7 +51,7 @@ export default class App extends Component {
           <Link to='/add/article'>Add article </Link>
         </nav>
         {user && <Router>
-          <Handle404 default/>
+          <CardTest default/>
           <Redirect from='/' to='/articles/all'/>
           <ListArticleLayout path='/articles/*/' user={user} topics={topics}/>
           <Users path='/users/*' user={user}/>
