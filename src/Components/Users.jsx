@@ -8,24 +8,14 @@ export default class Users extends Component {
       users: []
   }
 
-  componentDidMount () {
-    this.fetchUsers()
-  }
-
-  fetchUsers = () => {
-      serverGetRequest('/users').then(({data: {users}}) => this.setState({users}))
-  }
-
   render() {
-      const { users } = this.state
-      const { user } = this.props
+    const { user, users } = this.props
     return (
       <>
       <ul className='users'>
-        {users.map(({username}) => <Link key={username} to={`/users/${username}`}><li >{username}</li></Link>)}
+        {users.map(({username}) => <Link key={username} to={`/users/${username}`}><li>{username}</li></Link>)}
       </ul>
       <Router><UserCard path=':user_id' loggedInUser={user}/></Router>
-
       </>
     )
   }

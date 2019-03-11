@@ -13,11 +13,12 @@ import CardTest from './Components/CardTest';
 export default class App extends Component {
   state = {
     user: null,
-    topics: []
+    topics: [],
+    users: []
   }
 
   componentDidMount = () => {
-    this.fetchTopics()
+    this.fetchLists()
     this.setState({user: window.localStorage.getItem('user')})
   }
 
@@ -37,22 +38,23 @@ export default class App extends Component {
     }
   }
 
-  fetchTopics = () => {
-    req
-      .get('/topics')
-      .then(({ data: {topics} }) => this.setState({ topics }));
-  }
+  fetchLists = () => {
+    Promise.all([
+      req.get('/topics'),
+      req.get('/users')])
+      .then(([{ data: {topics} }, {data: {users}}]) => this.setState({ topics, users }))
+    }
 
   render() {
-    const {user, topics} = this.state
+    const {user, topics, users} = this.state
     return (
       <div className="App">
-        <Header user={user} topics={topics} handleLogin={this.handleLogin} handleLogout={this.handleLogout}/>
+        <Header user={user} users={users} topics={topics} handleLogin={this.handleLogin} />
         {user && <Router>
           <CardTest default/>
           <Redirect from='/' to='/articles/all'/>
           <Articles path='/articles/:topics' user={user} topics={topics}/>
-          <Users path='/users/*' user={user}/>
+          <Users path='/users/*' users={users} user={user}/>
           <SingleArticleLayout path='/article/:article_id' user={user}/>
           <AddArticle path='/add/article' user={user}/>
         </Router>}

@@ -11,7 +11,7 @@ export default class Header extends Component {
 
   render() {
     const { defaultPlaceHolder } = this.state
-    const { topics, user, handleLogin } = this.props;
+    const { topics, user, users, handleLogin } = this.props;
     return (
       <>
         <Navbar bg="dark" variant="dark">
@@ -24,9 +24,13 @@ export default class Header extends Component {
               <Dropdown.Header>topics</Dropdown.Header>
               {topics
                 .sort((a, b) => a.slug > b.slug ? 1 : -1)
-                .map(({slug}) => <Dropdown.Item onClick={() => navigate(`/articles/${slug}`)}>{slug}</Dropdown.Item>)}
+                .map(({slug}) => <Dropdown.Item key={slug} onClick={() => navigate(`/articles/${slug}`)}>{slug}</Dropdown.Item>)}
+              <Dropdown.Header>users</Dropdown.Header>
+              {users
+                .sort((a, b) => a.username > b.username ? 1 : -1)
+                .map(({username}) => <Dropdown.Item key={username} onClick={() => navigate(`/articles/all?author=${username}`)}>{username}</Dropdown.Item>)}
             </Dropdown.Menu>
-            </Dropdown>;
+            </Dropdown>
             <Nav.Link onClick={() => navigate('/users')}>Users</Nav.Link>
             <Nav.Link onClick={() => navigate('/add/article')}>Add Article</Nav.Link>
           </Nav>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import LiArticle from './LiArticle';
 import req from '../utils/axios';
-import { ListGroup } from 'react-bootstrap';
+import querystring from 'querystring'
 
 export default class Articles extends Component {
   state = {
@@ -12,29 +12,30 @@ export default class Articles extends Component {
 
   componentDidMount () {
     const { topics } = this.props
-    topics = (topics === 'all' ? null : topics)
-    this.fetchArticles(topics)
+    this.fetchArticles((topics === 'all' ? null : topics))
   }
 
   componentDidUpdate (prevProps, prevState) {
     const { sort_by, order } = this.state
-    const { topics } = this.props
-    topics = (topics === 'all' ? null : topics)
+    const { topics, location } = this.props
+    const topic = (topics === 'all' ? null : topics)
+    const author = querystring.parse(location.search.substr(1)).author
+
     const a = prevProps.topics !== topics;
     const b = prevState.sort_by !== sort_by;
     const c = prevState.order !== order;
-    
+    const d = prevProps.location !== location;
 
-    if (a || b || c) this.fetchArticles(topics, sort_by, order)
+    if (a || b || c || d) this.fetchArticles(topic, author, sort_by, order)
   }
 
   handleOrder = ({target: {name, value}}) => {
     this.setState({[name]: value})
   }
 
-  fetchArticles = (topic, sort_by, order) => {
+  fetchArticles = (topic, author, sort_by, order) => {
     req
-      .get('/articles', {params: { topic, sort_by, order } })
+      .get('/articles', {params: { topic, author, sort_by, order } })
       .then(({ data: {articles} }) => this.setState({ articles }))
   }
 
