@@ -5,8 +5,8 @@ import Articles from './Articles';
 
 export default function ListArticleLayout({ topics }) {
   return (
-    <div className="grid">
-      <Topics className="topics" topics={topics} />
+    <div>
+      {/* <Topics className="topics" topics={topics} /> */}
       <Router className="articles" primary={false}>
         <Articles path="/all" />
         <Articles path="/:topics" />

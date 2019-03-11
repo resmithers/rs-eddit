@@ -1,20 +1,53 @@
-import React from 'react';
-import Login from './Login';
+import React, { Component } from 'react';
+import {
+  Navbar, Nav, Form, FormControl, Button, InputGroup, Dropdown
+} from 'react-bootstrap';
+import { navigate } from '@reach/router';
 
-function Header({ user, handleLogin, handleLogout }) {
-  return (
-    <div className="headerGrid">
-      <h1 className="title">rs-eddit</h1>
-      <h3 className="logged">
-        {user && (`Logged in as: ${user}`)}
-        {user && <button onClick={handleLogout} type="button">Log out</button>}
-        {!user && 'Not logged in'}
-        {!user && (
-        <Login handleLogin={handleLogin} />
-        )}
+export default class Header extends Component {
+  state = {
+    defaultPlaceHolder: 'Username'
+  }
 
-      </h3>
-    </div>
-  );
+  render() {
+    const { defaultPlaceHolder } = this.state
+    const { topics, user, handleLogin } = this.props;
+    return (
+      <>
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand>rs-eddit</Navbar.Brand>
+          <Nav className="mr-auto">
+          <Dropdown as={Nav.Item}>
+            <Dropdown.Toggle as={Nav.Link}>Articles</Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => navigate('/articles/all')}>all</Dropdown.Item>
+              <Dropdown.Header>topics</Dropdown.Header>
+              {topics
+                .sort((a, b) => a.slug > b.slug ? 1 : -1)
+                .map(({slug}) => <Dropdown.Item onClick={() => navigate(`/articles/${slug}`)}>{slug}</Dropdown.Item>)}
+            </Dropdown.Menu>
+            </Dropdown>;
+            <Nav.Link onClick={() => navigate('/users')}>Users</Nav.Link>
+            <Nav.Link onClick={() => navigate('/add/article')}>Add Article</Nav.Link>
+          </Nav>
+          <Nav>
+            <Form inline onSubmit={handleLogin}>
+              <InputGroup>
+                <InputGroup.Prepend>
+                  <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
+                </InputGroup.Prepend>
+                <FormControl
+                  disabled={user}
+                  placeholder={user || defaultPlaceHolder}
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
+                {!user ? <Button name='login' type="submit">Log in</Button> : <Button name='logout' variant='danger' type="submit">Log out</Button>}
+              </InputGroup>
+            </Form>
+          </Nav>
+        </Navbar>
+      </>
+    );
+  }
 }
-export default Header;

@@ -4,6 +4,7 @@ import Votes from './Votes'
 import CommentList from './CommentList'
 import Delete from './Delete';
 import moment from 'moment'
+import { Card } from 'react-bootstrap';
 
 export default class SingleArticleLayout extends Component {
 
@@ -31,15 +32,21 @@ export default class SingleArticleLayout extends Component {
     const {article: art} = this.state
     return (
       <div className="SingleArticle">
-        {art && <ul>
-            {art.author === user && <Delete type='article' article_id={art.article_id}/>}
-            <li><h2>{art.title}</h2></li>
-            <li><h3>Author: {art.author} - Date listed: {moment(art.created_at).format('D MMM YY')} - Topic: {art.topic}</h3></li>
-            <li>{art.body}</li>
-            <br/>
-            <Votes article_id={art.article_id} votes={art.votes} target='articles'/>
+        {art && <>
+          <Delete type='article' article_id={art.article_id} onDelete={this.handleDelete}/>
+          <Card>
+              <Card.Title>{art.title}</Card.Title>
+              <Card.Subtitle>Author: {art.author} - Posted: {moment(art.created_at).format('D MMM YY')}</Card.Subtitle>
+              <Card.Body>
+                {art.body}
+              </Card.Body>
+              <Card.Subtitle>
+                Comments: {art.comment_count}
+              </Card.Subtitle>
+              <Votes article_id={art.article_id} votes={art.votes} target="articles" />
+            </Card>
             <CommentList article_id={art.article_id} user={user} comment_count={art.comment_count}/>
-        </ul>}      
+        </>}      
       </div>
     )
   }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import LiArticle from './LiArticle';
 import req from '../utils/axios';
+import { ListGroup } from 'react-bootstrap';
 
 export default class Articles extends Component {
   state = {
@@ -10,16 +11,19 @@ export default class Articles extends Component {
   }
 
   componentDidMount () {
-    this.fetchArticles(this.props.topics)
+    const { topics } = this.props
+    topics = (topics === 'all' ? null : topics)
+    this.fetchArticles(topics)
   }
 
   componentDidUpdate (prevProps, prevState) {
     const { sort_by, order } = this.state
     const { topics } = this.props
-
+    topics = (topics === 'all' ? null : topics)
     const a = prevProps.topics !== topics;
     const b = prevState.sort_by !== sort_by;
     const c = prevState.order !== order;
+    
 
     if (a || b || c) this.fetchArticles(topics, sort_by, order)
   }
@@ -38,7 +42,7 @@ export default class Articles extends Component {
     const { topics } = this.props;
     const { articles } = this.state;
     return (
-      <ul>
+      <div className='articles'>
         <form>
           Sort by: 
             <select name='sort_by' onChange={this.handleOrder}>
@@ -52,8 +56,8 @@ export default class Articles extends Component {
             <option value='asc'>asc</option>
           </select>
         </form>
-        {articles.map((art, i) =><LiArticle key={i} art={art} topic={topics}/>)}
-      </ul>
+        {articles.map((art, i) => <LiArticle key={i} art={art} topic={topics}/>)}
+      </div>
     )
   }
 }

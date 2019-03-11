@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Router, Link, Redirect } from '@reach/router'
+import { Router, Redirect } from '@reach/router'
 import Header from './Components/Header';
 import SingleArticleLayout from './Components/SingleArticleLayout';
 import './App.css';
-import ListArticleLayout from './Components/ListArticleLayout';
+import Articles from './Components/Articles';
 import AddArticle from './Components/AddArticle';
 import AddUser from './Components/AddUser'
-import Handle404 from './Components/Handle404';
 import Users from './Components/Users';
 import req from './utils/axios';
 import CardTest from './Components/CardTest';
@@ -22,16 +21,20 @@ export default class App extends Component {
     this.setState({user: window.localStorage.getItem('user')})
   }
 
-  handleLogin = (user, e) => {
+  handleLogin = (e) => {
     e.preventDefault()
-    this.setState({user})
-    window.localStorage.setItem('user', user)
-  }
-
-  handleLogout = (e) => {
-    e.preventDefault()
-    this.setState({user: null})
-    window.localStorage.removeItem('user')
+    const input = e.target[0]
+    const {value} = input
+    const logInOut = e.target[1].name
+    
+    if (logInOut === 'login') {
+      this.setState({user: value})
+      window.localStorage.setItem('user', value)
+    } else {
+      input.value = null
+      this.setState({user: null})
+      window.localStorage.removeItem('user')
+    }
   }
 
   fetchTopics = () => {
@@ -44,16 +47,11 @@ export default class App extends Component {
     const {user, topics} = this.state
     return (
       <div className="App">
-        <Header user={user} handleLogin={this.handleLogin} handleLogout={this.handleLogout}/>
-        <nav>
-          <Link to='/articles/all'>Articles </Link>
-          <Link to='/users'>Users </Link>
-          <Link to='/add/article'>Add article </Link>
-        </nav>
+        <Header user={user} topics={topics} handleLogin={this.handleLogin} handleLogout={this.handleLogout}/>
         {user && <Router>
           <CardTest default/>
           <Redirect from='/' to='/articles/all'/>
-          <ListArticleLayout path='/articles/*/' user={user} topics={topics}/>
+          <Articles path='/articles/:topics' user={user} topics={topics}/>
           <Users path='/users/*' user={user}/>
           <SingleArticleLayout path='/article/:article_id' user={user}/>
           <AddArticle path='/add/article' user={user}/>

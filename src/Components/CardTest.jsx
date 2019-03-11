@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 
 export default function CardTest() {
   const arr = [{ name: '1' }, { name: '2' }, { name: '3' }, { name: '4' }, { name: '5' }];

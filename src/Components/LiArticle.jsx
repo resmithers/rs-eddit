@@ -8,7 +8,8 @@ import Votes from './Votes';
 export default function LiArticle({ art }) {
   return (
     <Card>
-      <Card.Title><Link to={`/article/${art.article_id}`}>{art.title}</Link></Card.Title>
+      <Card.Header><Link to={`/article/${art.article_id}`}>{art.title}</Link></Card.Header>
+      <br />
       <Card.Subtitle>Author: {art.author}</Card.Subtitle>
       <Card.Body>
         Date listed: {moment(art.created_at).format('D MMM YY')}

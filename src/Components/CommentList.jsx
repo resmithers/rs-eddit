@@ -48,7 +48,6 @@ export default class CommentList extends Component {
       const { user, article_id } = this.props
       return (
         <>
-          Comments: {comment_count} 
           <AddComment user={user} article_id={article_id} handleNewComment={() => this.getComments(1)}/>
           <form>
             Sort by: 

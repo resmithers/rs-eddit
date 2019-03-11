@@ -2,13 +2,6 @@ h1 {
   text-align: center
 }
 
-.headerGrid {
-  display: grid;
-  width: 95vw;
-  grid-template-columns: 3fr 1fr;
-  grid-template-areas: 'title user'
-}
-
 .title {
   grid-area: title
 }
@@ -22,6 +15,7 @@ h1 {
   display: grid;
   height: 85vh;
   width: 95vw;
+  align-self: center;
   grid-template-columns: 1fr 4fr;
   grid-template-areas: 'top art';
 }
@@ -31,7 +25,11 @@ h1 {
 }
 
 .articles {
-  grid-area: art;
+  height: 90vh;
+  width: 80vw;
+  margin-left: 10vw;
+  margin-right: 10vh;
+  text-align: center;
   overflow-y: scroll
 }
 
