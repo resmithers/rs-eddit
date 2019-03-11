@@ -12,26 +12,29 @@ export default class Header extends Component {
   render() {
     const { defaultPlaceHolder } = this.state
     const { topics, user, users, handleLogin } = this.props;
+    topics.sort((a, b) => a.slug > b.slug ? 1 : -1)
+    users.sort((a, b) => a.username > b.username ? 1 : -1)
     return (
       <>
         <Navbar bg="dark" variant="dark">
           <Navbar.Brand>rs-eddit</Navbar.Brand>
           <Nav className="mr-auto">
-          <Dropdown as={Nav.Item}>
-            <Dropdown.Toggle as={Nav.Link}>Articles</Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => navigate('/articles/all')}>all</Dropdown.Item>
-              <Dropdown.Header>topics</Dropdown.Header>
-              {topics
-                .sort((a, b) => a.slug > b.slug ? 1 : -1)
-                .map(({slug}) => <Dropdown.Item key={slug} onClick={() => navigate(`/articles/${slug}`)}>{slug}</Dropdown.Item>)}
-              <Dropdown.Header>users</Dropdown.Header>
-              {users
-                .sort((a, b) => a.username > b.username ? 1 : -1)
-                .map(({username}) => <Dropdown.Item key={username} onClick={() => navigate(`/articles/all?author=${username}`)}>{username}</Dropdown.Item>)}
-            </Dropdown.Menu>
+            <Dropdown as={Nav.Item}>
+              <Dropdown.Toggle as={Nav.Link}>Articles</Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => navigate('/articles/all')}>all</Dropdown.Item>
+                <Dropdown.Header>topics</Dropdown.Header>
+                {topics.map(({slug}) => <Dropdown.Item key={slug} onClick={() => navigate(`/articles/${slug}`)}>{slug}</Dropdown.Item>)}
+                <Dropdown.Header>users</Dropdown.Header>
+                {users.map(({username}) => <Dropdown.Item key={username} onClick={() => navigate(`/articles/all?author=${username}`)}>{username}</Dropdown.Item>)}
+              </Dropdown.Menu>
             </Dropdown>
-            <Nav.Link onClick={() => navigate('/users')}>Users</Nav.Link>
+            <Dropdown as={Nav.Item}>
+              <Dropdown.Toggle as={Nav.Link}>Users</Dropdown.Toggle>
+              <Dropdown.Menu>
+                {users.map(({username}) => <Dropdown.Item key={username} onClick={() => navigate(`/users/${username}`)}>{username}</Dropdown.Item>)}
+              </Dropdown.Menu>
+            </Dropdown>
             <Nav.Link onClick={() => navigate('/add/article')}>Add Article</Nav.Link>
           </Nav>
           <Nav>

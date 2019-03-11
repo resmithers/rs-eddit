@@ -28,7 +28,7 @@ h1 {
   height: 90vh;
   width: 80vw;
   margin-left: 10vw;
-  margin-right: 10vh;
+  margin-right: 10vw;
   text-align: center;
   overflow-y: scroll
 }
@@ -43,13 +43,6 @@ h1 {
 
 .liComment {
   padding-bottom: 5%;
-}
-
-ul {
-  padding: none;
-  margin-left: -25px;
-  border: none;
-  list-style-type: none;
 }
 
 li {
@@ -77,3 +70,7 @@ nav {
   margin-left: 2%;
   margin-right: 2%;
 }
+
+.pagination {
+  margin: 2% !important;
+  }
