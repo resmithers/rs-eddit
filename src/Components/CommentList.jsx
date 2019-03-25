@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import AddComment from './AddComment';
 import req from '../utils/axios'
 import Comment from './Comment';
+import {Pagination} from 'react-bootstrap'
 
 export default class CommentList extends Component {
 
@@ -41,7 +42,25 @@ export default class CommentList extends Component {
       this.setState({[str]: value})
     }
 
-    handlePageChange = (dir) => this.setState(({p}) => ({p: p + dir}))
+    handlePageChange = ({dir, e}) => {
+      let text = e ? +e.target.text : null;
+      this.setState(({p}) => ({p: text || (p + dir)}))
+    }
+
+    paging = () => {
+      const {p, comment_count} = this.state
+      const pages = []
+      const maxPage = Math.ceil(comment_count / this.state.limit);
+      console.log(maxPage)
+      for (let i = 0; i < maxPage; i++ ) {pages.push(i + 1)}
+      return (
+        <Pagination style={{display: 'flex', justifyContent: 'center'}}>
+          <Pagination.Prev disabled={p <= maxPage -1} onClick={() => this.handlePageChange({dir: -1})}>{'<'}</Pagination.Prev>
+          {pages.map(page => <Pagination.Item onClick={(e) => this.handlePageChange({e})} key={page} active={page === p}>{page}</Pagination.Item>)}
+          <Pagination.Next disabled={p >= maxPage} onClick={() => this.handlePageChange({dir: 1})}>{'>'}</Pagination.Next>
+        </Pagination>
+      )
+    }
 
     render() {
       const { comments, comment_count, p, limit } = this.state
@@ -70,6 +89,7 @@ export default class CommentList extends Component {
               </div>
             </>
           )}
+          {this.paging()}
         </>
       );
     }

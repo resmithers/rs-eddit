@@ -35,7 +35,8 @@ export default class SingleArticleLayout extends Component {
         {art && <>
           <Delete type='article' article_id={art.article_id} onDelete={this.handleDelete}/>
           <Card>
-              <Card.Title>{art.title}</Card.Title>
+              <Card.Header>{art.title}</Card.Header>
+              <br/>
               <Card.Subtitle>Author: {art.author} - Posted: {moment(art.created_at).format('D MMM YY')}</Card.Subtitle>
               <Card.Body>
                 {art.body}

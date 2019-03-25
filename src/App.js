@@ -41,9 +41,9 @@ export default class App extends Component {
   fetchLists = () => {
     Promise.all([
       req.get('/topics'),
-      req.get('/users')])
-      .then(([{ data: {topics} }, {data: {users}}]) => this.setState({ topics, users }))
-    }
+      req.get('/users')
+    ]).then(([{ data: {topics} }, {data: {users}}]) => this.setState({ topics, users }))
+  }
 
   render() {
     const {user, topics, users} = this.state
@@ -54,7 +54,7 @@ export default class App extends Component {
           <Handle404 default/>
           <Redirect from='/' to='/articles/all'/>
           <Articles path='/articles/:topics' user={user} topics={topics}/>
-          <Users path='/users/*' users={users} user={user}/>
+          <Users path='/users/:user_id' user={user} topics={topics}/>
           <SingleArticleLayout path='/article/:article_id' user={user}/>
           <AddArticle path='/add/article' user={user}/>
         </Router>}
