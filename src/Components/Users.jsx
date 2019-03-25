@@ -7,7 +7,8 @@ import Error from './Error';
 export default class Users extends Component {
 	state = {
 		user: null,
-		articles: [],
+        articles: [],
+        error: false,
 	};
 
 	componentDidMount() {
@@ -31,13 +32,13 @@ export default class Users extends Component {
 	fetchArticles = () => {
 		const { user_id: author } = this.props;
 		return req
-			.get('/articles', { params: { author } })
+			.get('/articles', { params: { author, limit: 3 } })
 			.then(({ data }) => this.setState({ articles: data.articles, error: false }))
 			.catch(() => this.setState({ error: true }));
 	};
 
 	render() {
-		const { user, articles } = this.state;
+		const { user, articles, error } = this.state;
 		return (
 			<>
 				<div className="users">
@@ -50,7 +51,7 @@ export default class Users extends Component {
 								<Card.Text>{user.username}</Card.Text>
 								<Card.Footer>Most recent articles: </Card.Footer>
 								<div className="recent">
-                                    {articles.length === 0 && <Error />}
+                                    {error && <Error />}
 									{articles.map(a => (
 										<LiArticle key={a.article_id} art={a} />
 									))}
