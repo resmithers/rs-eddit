@@ -17,6 +17,7 @@ export default function LiArticle({ art }) {
         Comments: {art.comment_count}
       </Card.Body>
       <Votes article_id={art.article_id} votes={art.votes} target="articles" />
+      <br />
     </Card>
   );
 }

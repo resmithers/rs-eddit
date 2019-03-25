@@ -7,8 +7,8 @@ import Error from './Error';
 export default class Users extends Component {
 	state = {
 		user: null,
-        articles: [],
-        error: false,
+		articles: [],
+		error: false,
 	};
 
 	componentDidMount() {
@@ -45,13 +45,13 @@ export default class Users extends Component {
 					{!user && <div className="loader" />}
 					{user && (
 						<>
-							<img src={user.avatar_url} alt="Avatar"/>
+							<img className="avatar" src={user.avatar_url} alt="Avatar" />
 							<Card style={{ width: '80vw' }}>
-								<Card.Header>{user.name}</Card.Header>
-								<Card.Text>{user.username}</Card.Text>
-								<Card.Footer>Most recent articles: </Card.Footer>
+								<Card.Header>Name: {user.name}</Card.Header>
+								<Card.Text>Username: {user.username}</Card.Text>
 								<div className="recent">
                                     {error && <Error />}
+                                    <Card.Text>Most recent articles:</Card.Text>
 									{articles.map(a => (
 										<LiArticle key={a.article_id} art={a} />
 									))}
