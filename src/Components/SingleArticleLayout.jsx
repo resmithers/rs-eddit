@@ -45,7 +45,6 @@ export default class SingleArticleLayout extends Component {
 							<br />
 							{user === art.author && <Delete type="article" article_id={art.article_id} onDelete={this.handleDelete} />}
 						</Card>
-						<br />
 						<CommentList
 							article_id={art.article_id}
 							user={user}

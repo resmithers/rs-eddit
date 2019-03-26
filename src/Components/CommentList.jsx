@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import AddComment from './AddComment';
 import req from '../utils/axios';
 import Comment from './Comment';
-import {Pagination} from 'react-bootstrap';
 import Pages from './Paginations';
+import { Button, ButtonGroup, ButtonToolbar } from 'react-bootstrap';
 
 export default class CommentList extends Component {
 	state = {
@@ -39,9 +39,8 @@ export default class CommentList extends Component {
 			);
 	};
 
-	handleOrder = (e, str) => {
-		const { value } = e.target;
-		this.setState({ [str]: value });
+	handleOrder = ({ target: { name, value } }) => {
+		this.setState({ [name]: value });
 	};
 
 	handlePageChange = ({ dir, e }) => {
@@ -50,32 +49,51 @@ export default class CommentList extends Component {
 	};
 
 	render() {
-		const { comments, comment_count, p, limit } = this.state;
+		const { comments, comment_count, p, limit, sort_by, order } = this.state;
 		const { user, article_id } = this.props;
 		const data = { content: comment_count, p, limit, handlePageChange: this.handlePageChange };
 		return (
 			<>
+				<ButtonToolbar className="sort_toolbar">
+					<ButtonGroup className="btn-space">
+						<Button
+							disabled={sort_by === 'created_at'}
+							onClick={this.handleOrder}
+							name="sort_by"
+							value="created_at"
+						>created at
+						</Button>
+						<Button
+							disabled={sort_by === 'votes'}
+							onClick={this.handleOrder}
+							name="sort_by"
+							value="votes"
+						>votes
+						</Button>
+					</ButtonGroup>
+					<ButtonGroup>
+						<Button
+							disabled={order === 'desc'}
+							onClick={this.handleOrder}
+							name="order"
+							value="desc"
+						>desc
+						</Button>
+						<Button
+							disabled={order === 'asc'}
+							onClick={this.handleOrder}
+							name="order"
+							value="asc"
+							>asc
+						</Button>
+					</ButtonGroup>
+				</ButtonToolbar>
+				
 				<AddComment
 					user={user}
 					article_id={article_id}
 					handleNewComment={() => this.getComments(1)}
 				/>
-				<form>
-					Sort by:
-					<select onChange={e => this.handleOrder(e, 'sort_by')}>
-						<option default value="created_at">
-							Date
-						</option>
-						<option value="votes">Votes</option>
-					</select>
-					Order:
-					<select onChange={e => this.handleOrder(e, 'order')}>
-						<option default value="desc">
-							desc
-						</option>
-						<option value="asc">asc</option>
-					</select>
-				</form>
 				{comment_count > 0 && (
 					<>
 						{comments.map(c => (

@@ -84,9 +84,13 @@ nav {
 	justify-content: center;
 }
 
-.btn {
-	margin-left: 2%;
-	margin-right: 2%;
+.btn-space {
+    margin-right: 5px;
+}
+
+.sort_toolbar {
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .pagination {

@@ -4,6 +4,7 @@ import req from '../utils/axios';
 import querystring from 'querystring';
 import Pages from './Paginations';
 import Error from './Error';
+import { Button, ButtonGroup, ButtonToolbar } from 'react-bootstrap';
 
 export default class Articles extends Component {
 	state = {
@@ -40,7 +41,7 @@ export default class Articles extends Component {
 		}
 	}
 
-	handleOrder = ({ target: { name, value } }) => {
+	handleOrder = ({ target: {name, value} }) => {
 		this.setState({ [name]: value });
 	};
 
@@ -60,27 +61,25 @@ export default class Articles extends Component {
 
 	render() {
 		const { topics } = this.props;
-		const { articles, p, total_articles, limit, error } = this.state;
+		const { articles, p, total_articles, limit, error, sort_by, order } = this.state;
 		const data = { content: total_articles, p, limit, handlePageChange: this.handlePageChange };
-		
+
 		return (
-			<div className="articles" >
-        		{error && <Error topics={topics}/>}
-				{!error && (
+			<div className="articles">
+				{error && <Error topics={topics} />}
+				{!error && articles.length > 1 && (
 					<>
-						<form>
-							Sort by:
-							<select name="sort_by" onChange={this.handleOrder}>
-								<option default value="created_at">Date</option>
-								<option value="votes">Votes</option>
-								<option value="comment_count">Comments</option>
-							</select>
-							Order:
-							<select name="order" onChange={this.handleOrder}>
-								<option default value="desc">desc</option>
-								<option value="asc">asc</option>
-							</select>
-						</form>
+						<ButtonToolbar className="sort_toolbar" >
+							<ButtonGroup className="btn-space">
+								<Button disabled={sort_by === "created_at"} onClick={this.handleOrder} name="sort_by" value="created_at">created at</Button>
+								<Button disabled={sort_by === "votes"} onClick={this.handleOrder} name="sort_by" value="votes">votes</Button>
+								<Button disabled={sort_by === "comment_count"} onClick={this.handleOrder} name="sort_by" value="comment_count">comment count</Button>
+							</ButtonGroup>
+							<ButtonGroup>
+								<Button disabled={order === "desc"} onClick={this.handleOrder} name="order" value="desc">desc</Button>
+								<Button disabled={order === "asc"} onClick={this.handleOrder} name="order" value="asc">asc</Button>
+							</ButtonGroup>
+						</ButtonToolbar>
 						<Pages data={data} />
 						{articles.map((art, i) => (
 							<LiArticle key={i} art={art} />
