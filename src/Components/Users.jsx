@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import req from '../utils/axios';
-import { Card } from 'react-bootstrap';
+import { Card, Container, Row, Col } from 'react-bootstrap';
 import LiArticle from './LiArticle';
-import Error from './Error';
 
 export default class Users extends Component {
 	state = {
@@ -32,7 +31,7 @@ export default class Users extends Component {
 	fetchArticles = () => {
 		const { user_id: author } = this.props;
 		return req
-			.get('/articles', { params: { author, limit: 3 } })
+			.get('/articles', { params: { author, limit: 5 } })
 			.then(({ data }) => this.setState({ articles: data.articles, error: false }))
 			.catch(() => this.setState({ error: true }));
 	};
@@ -40,27 +39,36 @@ export default class Users extends Component {
 	render() {
 		const { user, articles, error } = this.state;
 		return (
-			<>
-				<div className="users">
-					{!user && <div className="loader" />}
-					{user && (
-						<>
-							<img className="avatar" src={user.avatar_url} alt="Avatar" />
-							<Card style={{ width: '80vw' }}>
-								<Card.Header>Name: {user.name}</Card.Header>
-								<Card.Text>Username: {user.username}</Card.Text>
-								<div className="recent">
-                                    {error && <Error />}
-                                    <Card.Text>Most recent articles:</Card.Text>
-									{articles.map(a => (
-										<LiArticle key={a.article_id} art={a} />
-									))}
-								</div>
-							</Card>
-						</>
-					)}
-				</div>
-			</>
+			<div>
+				{!user && <div className="loader" />}
+				{user && (
+					<>
+						<Container>
+							<Row>
+								<Col sm={4} className="av">
+									<Card >
+										<Card.Img className="avatar" src={user.avatar_url} alt="Avatar" />
+										<Card.Header>Name: {user.name}</Card.Header>
+										<Card.Text>Username: {user.username}</Card.Text>
+									</Card>
+								</Col>
+								<Col sm={8}>
+									<Container fluid className='recent'>
+										{!error && (
+											<>
+												<Card>
+													<Card.Header>Most recent articles by {user.username}</Card.Header>
+												</Card>
+												{articles.map(a => (<LiArticle key={a.article_id} art={a}/>))}
+											</>
+										)}
+									</Container>
+								</Col>
+							</Row>
+						</Container>
+					</>
+				)}
+			</div>
 		);
 	}
 }

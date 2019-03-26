@@ -23,9 +23,9 @@ export default class Votes extends Component {
       const { modVote } = this.state
       return (
           <ButtonToolbar>
-            <Button disabled={modVote > 0} variant="outline-success" size="sm" onClick={() => this.handleVote(1)}>&#x2B06;</Button>
+            <Button disabled={modVote > 0} className="votebutton" variant="outline-success" size="sm" onClick={() => this.handleVote(1)}>&#x2B06;</Button>
             Votes: {votes + modVote}
-            <Button disabled={modVote < 0}variant="outline-danger" size="sm" onClick={() => this.handleVote(-1)}>&#x2B07;</Button>
+            <Button disabled={modVote < 0} className="votebutton" variant="outline-danger" size="sm" onClick={() => this.handleVote(-1)}>&#x2B07;</Button>
           </ButtonToolbar>
       );
     }

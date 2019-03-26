@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { Router, Redirect } from '@reach/router'
+import { Router, Redirect, navigate } from '@reach/router'
 import Header from './Components/Header';
 import SingleArticleLayout from './Components/SingleArticleLayout';
-import './App.css';
 import Articles from './Components/Articles';
-import AddArticle from './Components/AddArticle';
 import AddUser from './Components/AddUser'
 import Users from './Components/Users';
-import req from './utils/axios';
+import Splash from './Components/Splash'
 import Handle404 from './Components/Handle404';
+import req from './utils/axios';
+import './App.css';
 
 export default class App extends Component {
   state = {
@@ -35,6 +35,7 @@ export default class App extends Component {
       input.value = null
       this.setState({user: null})
       window.localStorage.removeItem('user')
+      navigate('/sign-out')
     }
   }
 
@@ -42,7 +43,7 @@ export default class App extends Component {
     Promise.all([
       req.get('/topics'),
       req.get('/users')
-    ]).then(([{ data: {topics} }, {data: {users}}]) => this.setState({ topics, users }))
+    ]).then(([{ data: { topics } }, { data: { users } }]) => this.setState({ topics, users }))
   }
 
   render() {
@@ -52,15 +53,16 @@ export default class App extends Component {
         <Header user={user} users={users} topics={topics} handleLogin={this.handleLogin} />
         {user && <Router>
           <Handle404 default/>
-          <Redirect from='/' to='/articles/all'/>
+          <Redirect noThrow from='/' to='/articles/all'/>
+          <Redirect noThrow from='/sign-out' to='/articles/all'/>
           <Articles path='/articles/:topics' user={user} topics={topics}/>
           <Users path='/users/:user_id' user={user} topics={topics}/>
           <SingleArticleLayout path='/article/:article_id' user={user}/>
-          <AddArticle path='/add/article' user={user}/>
         </Router>}
-        <Router>
-          <AddUser path='/add/user' />
-        </Router>
+        {!user && <Router>
+          <AddUser default />
+          <Splash path='/sign-out'/>
+        </Router>}
       </div>
     );
   }

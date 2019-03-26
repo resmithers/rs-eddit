@@ -15,6 +15,10 @@ export default class SingleArticleLayout extends Component {
 		this.fetchSingleArticle();
 	};
 
+	componentDidUpdate = (prepro) => {
+		if (prepro.article_id !== this.props.article_id) this.fetchSingleArticle();
+	}
+
 	fetchSingleArticle = () => {
 		const { article_id } = this.props;
 		req.get(`articles/${article_id}`).then(({ data: { article } }) => this.setState({ article }));
@@ -27,7 +31,7 @@ export default class SingleArticleLayout extends Component {
 
 	render() {
 		const { user } = this.props;
-    const { article: art } = this.state;
+    	const { article: art } = this.state;
 		return (
 			<div className="SingleArticle">
 				{art && (

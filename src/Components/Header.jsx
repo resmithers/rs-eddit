@@ -1,26 +1,35 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, Form, FormControl, Button, InputGroup, Dropdown } from 'react-bootstrap';
+import AddArticle from './AddArticle';
+import {
+	Navbar,
+	Nav,
+	Form,
+	Button,
+	InputGroup,
+	Dropdown,
+	Modal,
+} from 'react-bootstrap';
 import { navigate } from '@reach/router';
 
 export default class Header extends Component {
 	state = {
 		defaultPlaceHolder: 'Username',
 		validUser: false,
+		showModal: false
 	};
 
-	componentDidUpdate(prePro, preSta) {
-		// console.dir(preSta.validUser)
-	}
-
-	handleValidUser = e => {
-		const { value } = e.target;
+	handleValidUser = ({ target: { value } }) => {
 		const { users } = this.props;
 		const validUser = users.map(user => user.username).includes(value);
 		if (this.state.validUser !== validUser) this.setState({ validUser });
 	};
 
+	toggleAdd = () => {
+		this.setState(({ showModal }) => ({ showModal: !showModal }));
+	};
+
 	render() {
-		const { defaultPlaceHolder, validUser } = this.state;
+		const { defaultPlaceHolder, validUser, showModal } = this.state;
 		const { topics, user, users, handleLogin } = this.props;
 		topics.sort((a, b) => (a.slug.toLowerCase() > b.slug.toLowerCase() ? 1 : -1));
 		users.sort((a, b) => (a.username.toLowerCase() > b.username.toLowerCase() ? 1 : -1));
@@ -59,20 +68,23 @@ export default class Header extends Component {
 							))}
 						</Dropdown.Menu>
 					</Dropdown>
-					<Nav.Link onClick={() => navigate('/add/article')}>Add Article</Nav.Link>
+					<Nav.Link onClick={() => this.toggleAdd()}>Add article</Nav.Link>
+					<Modal show={showModal} onHide={() => this.toggleAdd()} dialogClassName="addArticleModal">
+						<Modal.Header closeButton>
+							<Modal.Title>Add article</Modal.Title>
+						</Modal.Header>
+						<Modal.Body>
+							<AddArticle dialogClassName="addArticle" closeModal={() => this.toggleAdd()} author={user}/>
+						</Modal.Body>
+					</Modal>
 				</Nav>
 				<Nav>
-					<Form
-						onSubmit={e => {
-							handleLogin(e);
-							this.setState({ validUser: false });
-						}}
-					>
+					<Form onSubmit={e => {handleLogin(e); this.setState({ validUser: false })}}>
 						<InputGroup>
 							<InputGroup.Prepend>
 								<InputGroup.Text id="basic-addon1">@</InputGroup.Text>
 							</InputGroup.Prepend>
-							<FormControl
+							<Form.Control
 								disabled={user}
 								placeholder={user || defaultPlaceHolder}
 								aria-label="Username"
@@ -80,7 +92,12 @@ export default class Header extends Component {
 								onChange={this.handleValidUser}
 							/>
 							{!user && (
-								<Button name="login" disabled={!validUser} type="submit">
+								<Button
+									name="login"
+									variant={validUser ? 'success' : 'primary'}
+									disabled={!validUser}
+									type="submit"
+								>
 									Log in
 								</Button>
 							)}

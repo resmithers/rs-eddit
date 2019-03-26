@@ -41,7 +41,7 @@ export default class Articles extends Component {
 		}
 	}
 
-	handleOrder = ({ target: {name, value} }) => {
+	handleOrder = ({ target: { name, value } }) => {
 		this.setState({ [name]: value });
 	};
 
@@ -66,18 +66,54 @@ export default class Articles extends Component {
 
 		return (
 			<div className="articles">
+				{articles.length < 1 && <div className="loader" />}
 				{error && <Error topics={topics} />}
 				{!error && articles.length > 1 && (
 					<>
-						<ButtonToolbar className="sort_toolbar" >
+						<ButtonToolbar className="sort_toolbar">
 							<ButtonGroup className="btn-space">
-								<Button disabled={sort_by === "created_at"} onClick={this.handleOrder} name="sort_by" value="created_at">created at</Button>
-								<Button disabled={sort_by === "votes"} onClick={this.handleOrder} name="sort_by" value="votes">votes</Button>
-								<Button disabled={sort_by === "comment_count"} onClick={this.handleOrder} name="sort_by" value="comment_count">comment count</Button>
+								<Button
+									disabled={sort_by === 'created_at'}
+									onClick={this.handleOrder}
+									name="sort_by"
+									value="created_at"
+								>
+									created at
+								</Button>
+								<Button
+									disabled={sort_by === 'votes'}
+									onClick={this.handleOrder}
+									name="sort_by"
+									value="votes"
+								>
+									votes
+								</Button>
+								<Button
+									disabled={sort_by === 'comment_count'}
+									onClick={this.handleOrder}
+									name="sort_by"
+									value="comment_count"
+								>
+									comment count
+								</Button>
 							</ButtonGroup>
 							<ButtonGroup>
-								<Button disabled={order === "desc"} onClick={this.handleOrder} name="order" value="desc">desc</Button>
-								<Button disabled={order === "asc"} onClick={this.handleOrder} name="order" value="asc">asc</Button>
+								<Button
+									disabled={order === 'desc'}
+									onClick={this.handleOrder}
+									name="order"
+									value="desc"
+								>
+									desc
+								</Button>
+								<Button
+									disabled={order === 'asc'}
+									onClick={this.handleOrder}
+									name="order"
+									value="asc"
+								>
+									asc
+								</Button>
 							</ButtonGroup>
 						</ButtonToolbar>
 						<Pages data={data} />
