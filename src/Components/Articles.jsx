@@ -66,8 +66,8 @@ export default class Articles extends Component {
 
 		return (
 			<div className="articles">
-				{articles.length < 1 && <div className="loader" />}
 				{error && <Error topics={topics} />}
+				{!error && articles.length < 1 && <div className="loader" />}
 				{!error && articles.length > 1 && (
 					<>
 						<ButtonToolbar className="sort_toolbar">
