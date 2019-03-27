@@ -1,9 +1,12 @@
 import React from 'react';
+import { Jumbotron } from 'react-bootstrap';
 
-export default function Splash() {
+export default function Error() {
   return (
-    <div>
-      <p>I am the splash</p>
-    </div>
+    <>
+      <Jumbotron>
+        <h3>You have been signed out</h3>
+      </Jumbotron>
+    </>
   );
 }
