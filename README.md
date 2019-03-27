@@ -3,7 +3,7 @@
 ## [rs-eddit](https://rs-eddit.netlify.com) is hosted here 
 
 rs-eddit is a user created news webapp which serves as the front end to BE2-NC-Knews. 
-The [hosted api](https://rs-knews.herokuapp.com/api) and [git](github.com/resmithers/BE2-NC-Knews) are linked here.
+The [hosted api](https://rs-knews.herokuapp.com/api) and [git](https://github.com/resmithers/rs-eddit-backend.git) are linked here.
 
 The app allows users to view, post and interact with articles held in the backend database.
 
