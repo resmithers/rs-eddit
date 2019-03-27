@@ -19,7 +19,8 @@ export default class App extends Component {
 
 	componentDidMount = () => {
 		this.fetchLists();
-		this.setState({ user: window.localStorage.getItem('user') });
+		const { user } = this.state;
+		this.setState({ user: window.localStorage.getItem('user') || user });
 	};
 
 	handleLogin = e => {
