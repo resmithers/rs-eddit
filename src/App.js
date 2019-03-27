@@ -12,7 +12,7 @@ import './App.css';
 
 export default class App extends Component {
 	state = {
-		user: null,
+		user: 'grumpy19',
 		topics: [],
 		users: [],
 	};
@@ -40,7 +40,6 @@ export default class App extends Component {
 	};
 
 	newUserLogin = value => {
-    console.log(value)
 		this.setState({ user: value });
 		window.localStorage.setItem('user', value);
 	};
